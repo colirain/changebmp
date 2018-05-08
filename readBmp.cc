@@ -40,7 +40,8 @@ bool readBmp(char *bmpName, std::vector<std::vector<float> > *images)
 
     bmpHeight = head.biHeight;
 
-    biBitCount = head.biBitCount;//定义变量，计算图像每行像素所占的字节数（必须是4的倍数）
+    biBitCount = head.biBitCount;//Specifies the number of bits per pixels. 
+    //This value must be 1, 4, 8 or 24 in the 16 bit version; values of 16 or 32 may also be used in the 32 bit version of DaVinci.
 
     int lineByte=(bmpWidth * biBitCount/8+3)/4*4;//灰度图像有颜色表，且颜色表表项为256
 
@@ -61,7 +62,21 @@ bool readBmp(char *bmpName, std::vector<std::vector<float> > *images)
 
     fread(pBmpBuf,1,lineByte * bmpHeight,fp);
 
+    for(int i=0; i < lineByte * bmpHeight; i++)
+    {
+        printf("%c ", pBmpBuf[i]);
+        if(i%lineByte == 0){
+            printf("\n");
+        }
+    }
+
     fclose(fp);//关闭文件
 
     return 1;//读取文件成功
+}
+
+int main(){
+    std::vector<std::vector<float> > *images;
+    readBmp("viewfile.bmp", images); 
+
 }
